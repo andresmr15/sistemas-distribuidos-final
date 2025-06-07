@@ -35,13 +35,6 @@ public class RepositorioLaboratorio {
                 LocalDate.parse("2025-01-03"),
                 EstadoPrestamo.DEVUELTO,
                 "Osciloscopio"));
-        agregarPrestamo(2, new PrestamoLaboratorio(
-                  1,
-                LocalDate.parse("2025-03-01"),
-                LocalDate.parse("2025-03-06"),
-                null,
-                EstadoPrestamo.ACTIVO,
-                "Computador de laboratorio"));
         agregarPrestamo(3, new PrestamoLaboratorio(
                 1,
                 LocalDate.parse("2025-04-02"),

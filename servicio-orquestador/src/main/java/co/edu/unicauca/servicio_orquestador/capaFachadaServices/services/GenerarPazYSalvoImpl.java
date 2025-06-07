@@ -59,7 +59,7 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
             if (objRespuestaDeportes.getDeudas().isEmpty() && objRespuestaFinanciera.getDeudas().isEmpty()
                     && objRespuestaLaboratorio.getPrestamos().isEmpty()) {
                 objRespuestaPazYSalvo
-                        .setMensaje("El estudiante " + objPeticionConvertida.getNombreEstudiante() + " con código "
+                        .setMensaje("El estudiante con código "
                                 + objPeticionConvertida.getCodigoEstudiante() + " está a paz y salvo");
             } else {
                 objRespuestaPazYSalvo.setMensaje("El estudiante no está a paz y salvo");
@@ -125,7 +125,7 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
                 && objRespuestaPazYSalvo.getObjFinanciera().getDeudas().isEmpty()
                 && objRespuestaPazYSalvo.getObjLaboratorio().getPrestamos().isEmpty()) {
             objRespuestaPazYSalvo
-                    .setMensaje("El estudiante " + objPeticionConvertida.getNombreEstudiante() + " con código "
+                    .setMensaje("El estudiante con código "
                             + objPeticionConvertida.getCodigoEstudiante() + " está a paz y salvo");
         } else {
             objRespuestaPazYSalvo.setMensaje("El estudiante no está a paz y salvo");

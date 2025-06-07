@@ -6,6 +6,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Estudiante {
-    private String nombreEstudiante;
     private int codigoEstudiante;
 }
