@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unicauca.servicio_deportes.capaFachadaServices.DTO.Peticion.EstudianteDTO;
+import co.edu.unicauca.servicio_deportes.capaFachadaServices.DTO.Peticion.PeticionEstudianteDTO;
 import co.edu.unicauca.servicio_deportes.capaFachadaServices.DTO.Respuesta.RespuestaDeportesDTO;
 import co.edu.unicauca.servicio_deportes.capaFachadaServices.services.SolicitudesImpl;
 
@@ -18,7 +18,7 @@ public class controladorImplementos {
     @Autowired
     private SolicitudesImpl objSolicitudDeudas;
     @PostMapping("/deudasDeportivo")
-    public RespuestaDeportesDTO solicitarDeudas(@RequestBody EstudianteDTO objPeticion){
+    public RespuestaDeportesDTO solicitarDeudas(@RequestBody PeticionEstudianteDTO objPeticion){
         return this.objSolicitudDeudas.solicitarDeudas(objPeticion);
     }
     @DeleteMapping("/deudasDeportivo/{codigoEstudiante}")

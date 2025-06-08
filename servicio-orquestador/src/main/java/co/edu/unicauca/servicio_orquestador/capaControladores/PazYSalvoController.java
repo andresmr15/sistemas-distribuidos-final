@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Peticion.EstudianteDTO;
+import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Peticion.PeticionEstudianteDTO;
 import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Respuesta.RespuestaPazYSalvoDTO;
 import co.edu.unicauca.servicio_orquestador.capaFachadaServices.services.GenerarPazYSalvoInt;
 import reactor.core.publisher.Mono;
@@ -18,12 +18,12 @@ public class PazYSalvoController {
     private GenerarPazYSalvoInt objFachada;
     
     @PostMapping("/orquestadorSincrono")
-    public RespuestaPazYSalvoDTO orquestarServiciosSincronamente(@RequestBody EstudianteDTO objPeticion){
+    public RespuestaPazYSalvoDTO orquestarServiciosSincronamente(@RequestBody PeticionEstudianteDTO objPeticion){
         RespuestaPazYSalvoDTO objResultado = this.objFachada.generarPazYSalvoSincrono(objPeticion);
         return objResultado;
     }
     @PostMapping("/orquestadorAsincrono")
-    public Mono<RespuestaPazYSalvoDTO> orquestadorServicionsAsincronamente(@RequestBody EstudianteDTO objPeticion){
+    public Mono<RespuestaPazYSalvoDTO> orquestadorServicionsAsincronamente(@RequestBody PeticionEstudianteDTO objPeticion){
         Mono<RespuestaPazYSalvoDTO> objResultado = this.objFachada.generarPazYSalvoAsincrono(objPeticion);
         return objResultado;
     }

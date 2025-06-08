@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import co.edu.unicauca.estudiante_clienterest.capaFachadaServices.servicios.OperacionesClienteImpl;
-import co.edu.unicauca.estudiante_clienterest.capaFachadaServices.DTO.peticion.EstudianteDTO;
+import co.edu.unicauca.estudiante_clienterest.capaFachadaServices.DTO.peticion.PeticionEstudianteDTO;
 import co.edu.unicauca.estudiante_clienterest.capaFachadaServices.DTO.respuesta.DeudaFinancieraDTO;
 import co.edu.unicauca.estudiante_clienterest.capaFachadaServices.DTO.respuesta.DeudaImplementoDTO;
 import co.edu.unicauca.estudiante_clienterest.capaFachadaServices.DTO.respuesta.PrestamoLaboratorioDTO;
@@ -21,11 +21,15 @@ public class MenuCliente {
 
     public void mostrarMenu() {
         int opcion;
+        int codigoEstudiante;
+        PeticionEstudianteDTO objPeticion;
+        RespuestaPazYSalvoDTO objRespuesta;
 
         do {
             System.out.println("\n======= Menu Cliente =======");
-            System.out.println("1. Solicitar paz y salvo");
-            System.out.println("2. Salir");
+            System.out.println("1. Solicitar paz y salvo de manera sincrona");
+            System.out.println("2. Solicitar paz y salvo de manera asíncrona");
+            System.out.println("3. Salir");
             System.out.print("Ingrese una opcion: ");
 
             opcion = UtilidadesConsola.leerEntero();
@@ -33,23 +37,33 @@ public class MenuCliente {
             switch (opcion) {
                 case 1:
                     System.out.print("Ingrese su código de estudiante: ");
-                    int codigoEstudiante = UtilidadesConsola.leerEntero();
-                    EstudianteDTO objPeticion = new EstudianteDTO(codigoEstudiante);
-                    RespuestaPazYSalvoDTO objRespuesta = this.objOperacionCliente.generarPazYSalvoSincrono(objPeticion);
-                    imprimirDeudasDeportes(objRespuesta.getObjDeportes().getDeudas());
-                    imprimirDeudasFinanciera(objRespuesta.getObjFinanciera().getDeudas());
-                    imprimirDeudasLaboratorio(objRespuesta.getObjLaboratorio().getPrestamos());
-                    System.out.println("\nMensaje: " + objRespuesta.getMensaje());
+                    codigoEstudiante = UtilidadesConsola.leerEntero();
+                    objPeticion = new PeticionEstudianteDTO(codigoEstudiante);
+                    objRespuesta = this.objOperacionCliente.generarPazYSalvoSincrono(objPeticion);
+                    imprimirResultado(objRespuesta);
+                    break;
+                case 2:
+                    System.out.print("Ingrese su código de estudiante: ");
+                    codigoEstudiante = UtilidadesConsola.leerEntero();
+                    objPeticion = new PeticionEstudianteDTO(codigoEstudiante);
+                    objRespuesta = this.objOperacionCliente.generarPazYSalvoAsincrono(objPeticion);
+                    imprimirResultado(objRespuesta);
                     break;
                 case 3:
                     System.out.println("Saliendo...");
                     break;
                 default:
                     System.out.println("Opcion invalida");
-
             }
 
         } while (opcion != 3);
+    }
+
+    private void imprimirResultado(RespuestaPazYSalvoDTO objRespuesta) {
+        imprimirDeudasDeportes(objRespuesta.getObjDeportes().getDeudas());
+        imprimirDeudasFinanciera(objRespuesta.getObjFinanciera().getDeudas());
+        imprimirDeudasLaboratorio(objRespuesta.getObjLaboratorio().getPrestamos());
+        System.out.println("\nMensaje: " + objRespuesta.getMensaje());
     }
 
     private void imprimirDeudasDeportes(List<DeudaImplementoDTO> listaDeudasAreaDeportes) {

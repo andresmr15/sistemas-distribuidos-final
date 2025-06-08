@@ -1,10 +1,10 @@
-package co.edu.unicauca.servicio_laboratorio.capaFachadaServices.DTO.Peticion;
+package co.edu.unicauca.servicio_financiera.capaFachadaServices.DTO.Peticion;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class EstudianteDTO {
+public class PeticionEstudianteDTO {
     private int codigoEstudiante;
 }

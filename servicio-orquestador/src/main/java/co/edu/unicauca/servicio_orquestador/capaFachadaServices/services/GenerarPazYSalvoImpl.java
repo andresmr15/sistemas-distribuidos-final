@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import co.edu.unicauca.servicio_orquestador.capaAccesoDatos.modelos.Estudiante;
-import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Peticion.EstudianteDTO;
+import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Peticion.PeticionEstudianteDTO;
 import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Respuesta.RespuestaPazYSalvoDTO;
 import reactor.core.publisher.Mono;
 import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Respuesta.RespuestaDeportesDTO;
@@ -22,7 +22,7 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
     private ModelMapper modelMapper;
 
     @Override
-    public RespuestaPazYSalvoDTO generarPazYSalvoSincrono(EstudianteDTO objPeticion) {
+    public RespuestaPazYSalvoDTO generarPazYSalvoSincrono(PeticionEstudianteDTO objPeticion) {
 
         System.out.println("Iniciando el proceso de generación de paz y salvo... de manera sincrona");
         RespuestaPazYSalvoDTO objRespuestaPazYSalvo = new RespuestaPazYSalvoDTO();
@@ -73,7 +73,7 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
     }
 
     @Override
-    public Mono<RespuestaPazYSalvoDTO> generarPazYSalvoAsincrono(EstudianteDTO objPeticion) {
+    public Mono<RespuestaPazYSalvoDTO> generarPazYSalvoAsincrono(PeticionEstudianteDTO objPeticion) {
         System.out.println("Iniciando el proceso de generación de paz y salvo... de manera asincrona");
         RespuestaPazYSalvoDTO objRespuestaPazYSalvo = new RespuestaPazYSalvoDTO();
         Estudiante objPeticionConvertida = this.modelMapper.map(objPeticion, Estudiante.class);

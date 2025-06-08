@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.servicio_laboratorio.capaAccesoDatos.modelos.Estudiante;
 import co.edu.unicauca.servicio_laboratorio.capaAccesoDatos.repositorios.RepositorioLaboratorio;
-import co.edu.unicauca.servicio_laboratorio.capaFachadaServices.DTO.Peticion.EstudianteDTO;
+import co.edu.unicauca.servicio_laboratorio.capaFachadaServices.DTO.Peticion.PeticionEstudianteDTO;
 import co.edu.unicauca.servicio_laboratorio.capaFachadaServices.DTO.Respuesta.RespuestaLaboratorioDTO;
 
 @Service
@@ -16,7 +16,7 @@ public class SolicitudesImpl implements SolicitudesInt {
     @Autowired
     private ModelMapper modelMapper;
 
-    public RespuestaLaboratorioDTO solicitarPrestamos(EstudianteDTO objPeticion) {
+    public RespuestaLaboratorioDTO solicitarPrestamos(PeticionEstudianteDTO objPeticion) {
         RespuestaLaboratorioDTO objRespuesta = new RespuestaLaboratorioDTO();
         Estudiante objUsuarioConvertido = this.modelMapper.map(objPeticion, Estudiante.class);
         objRespuesta.setPrestamos(objRepositorioLaboratorio.consultarPrestamos(objUsuarioConvertido.getCodigoEstudiante()));
