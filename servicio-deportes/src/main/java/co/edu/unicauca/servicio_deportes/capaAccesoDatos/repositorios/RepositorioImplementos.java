@@ -16,7 +16,9 @@ public class RepositorioImplementos {
 
     public RepositorioImplementos() {
         System.out.println("Configurando servicio del área de deportes...");
-        insertarImplementosPrueba();
+        if (deudas.isEmpty()) {
+            insertarImplementosPrueba();
+        }
     }
 
     private void insertarImplementosPrueba() {

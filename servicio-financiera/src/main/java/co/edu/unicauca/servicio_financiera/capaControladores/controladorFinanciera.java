@@ -1,6 +1,7 @@
 package co.edu.unicauca.servicio_financiera.capaControladores;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import co.edu.unicauca.servicio_financiera.capaFachadaServices.services.Solicitu
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class controladorFinanciera {
     @Autowired
     private SolicitudesImpl objSolicitudDeudas;

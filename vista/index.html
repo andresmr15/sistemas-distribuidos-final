@@ -13,12 +13,13 @@
   <div id="conexionButtons">
     <button id="btnConectarAreaDeportes" onclick="conectar('deportes')">Conectar Area Deportes</button>
     <button id="btnConectarAreaFinanciera" onclick="conectar('financiera')">Conectar Area Financiera</button>
-    <button id="btnConectarAreaLaboratorio" onclick="conectar('laboratorio')">Conectar Area Laboratorio</button>
+    <button id="btnConectarAreaLaboratorio" onclick="conectar('laboratorios')">Conectar Area Laboratorio</button>
     <button id="btnDesconectar" onclick="desconectar()" disabled>Desconectar</button>
   </div>
 
   <div id="manejoDeuda">
-    <h3>Manejo deuda:</h3> 
+    <h3>Manejo deuda:</h3>
+    <input type="text" id="inputEliminarDeuda" placeholder="Ingrese el código del estudiante">
     <button id="btnEliminarDeudas" onclick="enviarMensajePrivadoServidor()" disabled>Deuda pagada</button>
   </div>
 

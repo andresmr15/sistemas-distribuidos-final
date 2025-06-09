@@ -17,7 +17,9 @@ public class RepositorioLaboratorio {
 
     public RepositorioLaboratorio() {
         System.out.println("Configurando servicio del área laboratorios...");
-        insertarPrestamosPrueba();
+        if (prestamos.isEmpty()) {
+            insertarPrestamosPrueba();
+        }
     }
 
     private void insertarPrestamosPrueba() {

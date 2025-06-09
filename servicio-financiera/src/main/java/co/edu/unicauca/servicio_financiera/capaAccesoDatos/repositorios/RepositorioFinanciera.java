@@ -17,7 +17,9 @@ public class RepositorioFinanciera {
 
     public RepositorioFinanciera() {
         System.out.println("Configurando servicio del área financiera...");
-        insertarDeudasPrueba();
+        if (deudas.isEmpty()) {
+            insertarDeudasPrueba();
+        }
     }
 
     private void insertarDeudasPrueba() {

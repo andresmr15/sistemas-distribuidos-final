@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import co.edu.unicauca.servicio_orquestador.capaAccesoDatos.modelos.Estudiante;
 import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Peticion.PeticionEstudianteDTO;
@@ -24,11 +25,19 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
     @Autowired
     private NotificacionPazYSalvoService notificacionService;
 
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
     @Override
     public RespuestaPazYSalvoDTO generarPazYSalvoSincrono(PeticionEstudianteDTO objPeticion) {
         System.out.println("Iniciando el proceso de generación de paz y salvo... de manera sincrona");
         RespuestaPazYSalvoDTO objRespuestaPazYSalvo = new RespuestaPazYSalvoDTO();
         Estudiante objPeticionConvertida = this.modelMapper.map(objPeticion, Estudiante.class);
+
+        // Notificar la nueva solicitud
+        String mensajeSolicitud = String.format("El estudiante con código %d ha realizado una nueva solicitud de paz y salvo", 
+            objPeticionConvertida.getCodigoEstudiante());
+        simpMessagingTemplate.convertAndSend("/notificaciones/solicitud", mensajeSolicitud);
 
         try {
             String urlServicioDeportes = "http://localhost:5001/api/deudasDeportivo";
@@ -82,6 +91,11 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
         System.out.println("Iniciando el proceso de generación de paz y salvo... de manera asincrona");
         RespuestaPazYSalvoDTO objRespuestaPazYSalvo = new RespuestaPazYSalvoDTO();
         Estudiante objPeticionConvertida = this.modelMapper.map(objPeticion, Estudiante.class);
+
+        // Notificar la nueva solicitud
+        String mensajeSolicitud = String.format("El estudiante con código %d ha realizado una nueva solicitud de paz y salvo", 
+            objPeticionConvertida.getCodigoEstudiante());
+        simpMessagingTemplate.convertAndSend("/notificaciones/solicitud", mensajeSolicitud);
 
         String urlServicioDeportes = "http://localhost:5001/api/deudasDeportivo";
         Mono<RespuestaDeportesDTO> objRespuestaDeportes = webClient.post()
