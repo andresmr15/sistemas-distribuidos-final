@@ -7,11 +7,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import co.edu.unicauca.servicio_orquestador.capaAccesoDatos.modelos.Estudiante;
 import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Peticion.PeticionEstudianteDTO;
-import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Respuesta.RespuestaPazYSalvoDTO;
-import reactor.core.publisher.Mono;
 import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Respuesta.RespuestaDeportesDTO;
 import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Respuesta.RespuestaFinancieraDTO;
 import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Respuesta.RespuestaLaboratorioDTO;
+import co.edu.unicauca.servicio_orquestador.capaFachadaServices.DTO.Respuesta.RespuestaPazYSalvoDTO;
+import reactor.core.publisher.Mono;
 
 @Service
 public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
@@ -21,9 +21,11 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private NotificacionPazYSalvoService notificacionService;
+
     @Override
     public RespuestaPazYSalvoDTO generarPazYSalvoSincrono(PeticionEstudianteDTO objPeticion) {
-
         System.out.println("Iniciando el proceso de generación de paz y salvo... de manera sincrona");
         RespuestaPazYSalvoDTO objRespuestaPazYSalvo = new RespuestaPazYSalvoDTO();
         Estudiante objPeticionConvertida = this.modelMapper.map(objPeticion, Estudiante.class);
@@ -37,6 +39,7 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
                     .bodyToMono(RespuestaDeportesDTO.class)
                     .block();
             objRespuestaPazYSalvo.setObjDeportes(objRespuestaDeportes);
+            notificacionService.notificarDeudaDeportes(objPeticionConvertida.getCodigoEstudiante(), objRespuestaDeportes);
 
             String urlServicioFinanciera = "http://localhost:5002/api/deudasFinanciera";
             RespuestaFinancieraDTO objRespuestaFinanciera = webClient.post()
@@ -46,6 +49,7 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
                     .bodyToMono(RespuestaFinancieraDTO.class)
                     .block();
             objRespuestaPazYSalvo.setObjFinanciera(objRespuestaFinanciera);
+            notificacionService.notificarDeudaFinanciera(objPeticionConvertida.getCodigoEstudiante(), objRespuestaFinanciera);
 
             String urlServicioLaboratorio = "http://localhost:5003/api/prestamosLaboratorio";
             RespuestaLaboratorioDTO objRespuestaLaboratorio = webClient.post()
@@ -55,6 +59,7 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
                     .bodyToMono(RespuestaLaboratorioDTO.class)
                     .block();
             objRespuestaPazYSalvo.setObjLaboratorio(objRespuestaLaboratorio);
+            notificacionService.notificarDeudaLaboratorio(objPeticionConvertida.getCodigoEstudiante(), objRespuestaLaboratorio);
 
             if (objRespuestaDeportes.getDeudas().isEmpty() && objRespuestaFinanciera.getDeudas().isEmpty()
                     && objRespuestaLaboratorio.getPrestamos().isEmpty()) {
@@ -84,8 +89,10 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
                 .bodyValue(objPeticionConvertida)
                 .retrieve()
                 .bodyToMono(RespuestaDeportesDTO.class)
+                .doOnNext(respuesta -> 
+                    notificacionService.notificarDeudaDeportes(objPeticionConvertida.getCodigoEstudiante(), respuesta))
                 .doOnError(e -> System.err
-                        .println("Error generando el paz y salvo del área de deportes: " + e.getMessage())); // Síncrono
+                        .println("Error generando el paz y salvo del área de deportes: " + e.getMessage()));
 
         String urlServicioFinanciera = "http://localhost:5002/api/deudasFinanciera";
         Mono<RespuestaFinancieraDTO> objRespuestaFinanciera = webClient.post()
@@ -93,6 +100,8 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
                 .bodyValue(objPeticionConvertida)
                 .retrieve()
                 .bodyToMono(RespuestaFinancieraDTO.class)
+                .doOnNext(respuesta -> 
+                    notificacionService.notificarDeudaFinanciera(objPeticionConvertida.getCodigoEstudiante(), respuesta))
                 .doOnError(e -> System.err
                         .println("Error generando el paz y salvo del área financiera" + e.getMessage()));
 
@@ -102,6 +111,8 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
                 .bodyValue(objPeticionConvertida)
                 .retrieve()
                 .bodyToMono(RespuestaLaboratorioDTO.class)
+                .doOnNext(respuesta -> 
+                    notificacionService.notificarDeudaLaboratorio(objPeticionConvertida.getCodigoEstudiante(), respuesta))
                 .doOnError(e -> System.err
                         .println("Error generando el paz y salvo del área de laboratorio" + e.getMessage()));
 
@@ -117,7 +128,6 @@ public class GenerarPazYSalvoImpl implements GenerarPazYSalvoInt {
                     respuesta.setMensaje("Error al generar el paz y salvo");
                     return Mono.just(respuesta);
                 });
-
     }
 
     private void verificarPazYSalvoAsincrono(Estudiante objPeticionConvertida, RespuestaPazYSalvoDTO objRespuestaPazYSalvo) {

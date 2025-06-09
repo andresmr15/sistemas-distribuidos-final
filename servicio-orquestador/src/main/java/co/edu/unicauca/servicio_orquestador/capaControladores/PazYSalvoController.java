@@ -17,6 +17,9 @@ public class PazYSalvoController {
     @Autowired
     private GenerarPazYSalvoInt objFachada;
     
+    @Autowired
+    private ContadorFallos contadorFallos;
+    
     @PostMapping("/orquestadorSincrono")
     public RespuestaPazYSalvoDTO orquestarServiciosSincronamente(@RequestBody PeticionEstudianteDTO objPeticion){
         RespuestaPazYSalvoDTO objResultado = this.objFachada.generarPazYSalvoSincrono(objPeticion);
@@ -26,5 +29,19 @@ public class PazYSalvoController {
     public Mono<RespuestaPazYSalvoDTO> orquestadorServicionsAsincronamente(@RequestBody PeticionEstudianteDTO objPeticion){
         Mono<RespuestaPazYSalvoDTO> objResultado = this.objFachada.generarPazYSalvoAsincrono(objPeticion);
         return objResultado;
+    }
+
+    private void simularFallo(){
+        int intento = contadorFallos.siguienteIntento();
+        if (intento < 3) {
+            try {
+                System.out.println("Simulando fallo...");
+                Thread.sleep(8000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        } 
+        
+        throw new RuntimeException("Error simulado");
     }
 }
