@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Administrador</title>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+  <script src="funciones.js" defer></script>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <h2>Administrador</h2>
+  <div id="conexionButtons">
+    <button id="btnConectarAreaDeportes" onclick="conectar('deportes')">Conectar Area Deportes</button>
+    <button id="btnConectarAreaFinanciera" onclick="conectar('financiera')">Conectar Area Financiera</button>
+    <button id="btnConectarAreaLaboratorio" onclick="conectar('laboratorio')">Conectar Area Laboratorio</button>
+    <button id="btnDesconectar" onclick="desconectar()" disabled>Desconectar</button>
+  </div>
+
+  <div id="manejoDeuda">
+    <h3>Manejo deuda:</h3> 
+    <button id="btnEliminarDeudas" onclick="enviarMensajePrivadoServidor()" disabled>Deuda pagada</button>
+  </div>
+
+  <div id="outputsMs">
+    <h3>Solicitud de paz y salvo:</h3>
+    <div id="divMensajeSolicitud">
+      <!-- Los mensajes de solicitud se mostrarán aquí -->
+    </div>
+    <h3>Deudas en esta area:</h3>
+    <div id="divMensajeDeudas">
+      <!-- Los mensajes de deudas se mostrarán aquí -->
+    </div>
+  </div>  
+</body>
+</html>
+
+
