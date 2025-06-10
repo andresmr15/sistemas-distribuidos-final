@@ -1,4 +1,4 @@
-* La versión final se encuentra en la rama intentoVista1
+** La versión final se encuentra en la rama intentoVista1
 - El ejecutable "ejecutar_servicios_y_cliente.bat" permite ejecutar los script que se encuentran dentro de los servicios y a su vez el del cliente estudiante.
 
 Hace falta:
