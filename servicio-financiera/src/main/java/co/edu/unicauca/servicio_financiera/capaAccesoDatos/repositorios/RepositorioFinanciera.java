@@ -44,8 +44,8 @@ public class RepositorioFinanciera {
                 LocalDate.parse("2025-03-01"),
                 LocalDate.parse("2025-03-10"),
                 EstadoDeuda.PENDIENTE));
-        agregarDeuda(3, new DeudaFinanciera(
-                3,
+        agregarDeuda(4, new DeudaFinanciera(
+                4,
                 75000,
                 "Mora en pago de habilitación",
                 LocalDate.parse("2025-04-01"),

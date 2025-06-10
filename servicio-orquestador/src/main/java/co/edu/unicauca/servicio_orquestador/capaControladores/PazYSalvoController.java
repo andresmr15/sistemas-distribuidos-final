@@ -22,6 +22,7 @@ public class PazYSalvoController {
     
     @PostMapping("/orquestadorSincrono")
     public RespuestaPazYSalvoDTO orquestarServiciosSincronamente(@RequestBody PeticionEstudianteDTO objPeticion){
+       // simularFallo();
         RespuestaPazYSalvoDTO objResultado = this.objFachada.generarPazYSalvoSincrono(objPeticion);
         return objResultado;
     }

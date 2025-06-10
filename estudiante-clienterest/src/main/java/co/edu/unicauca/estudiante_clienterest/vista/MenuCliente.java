@@ -14,7 +14,6 @@ import co.edu.unicauca.estudiante_clienterest.capaFachadaServices.DTO.respuesta.
 import co.edu.unicauca.estudiante_clienterest.utilidades.UtilidadesConsola;
 
 @Component
-
 public class MenuCliente {
     @Autowired
     private OperacionesClienteImpl objOperacionCliente;
@@ -26,40 +25,60 @@ public class MenuCliente {
         RespuestaPazYSalvoDTO objRespuesta;
 
         do {
-            System.out.println("\n======= Menu Cliente =======");
-            System.out.println("1. Solicitar paz y salvo de manera sincrona");
-            System.out.println("2. Solicitar paz y salvo de manera asíncrona");
-            System.out.println("3. Salir");
-            System.out.print("Ingrese una opcion: ");
+            try {
+                System.out.println("\n======= Menu Cliente =======");
+                System.out.println("1. Solicitar paz y salvo de manera sincrona");
+                System.out.println("2. Solicitar paz y salvo de manera asíncrona");
+                System.out.println("3. Salir");
+                System.out.print("Ingrese una opcion: ");
 
-            opcion = UtilidadesConsola.leerEntero();
+                opcion = UtilidadesConsola.leerEntero();
 
-            switch (opcion) {
-                case 1:
-                    System.out.print("Ingrese su código de estudiante: ");
-                    codigoEstudiante = UtilidadesConsola.leerEntero();
-                    objPeticion = new PeticionEstudianteDTO(codigoEstudiante);
-                    objRespuesta = this.objOperacionCliente.generarPazYSalvoSincrono(objPeticion);
-                    imprimirResultado(objRespuesta);
-                    break;
-                case 2:
-                    System.out.print("Ingrese su código de estudiante: ");
-                    codigoEstudiante = UtilidadesConsola.leerEntero();
-                    objPeticion = new PeticionEstudianteDTO(codigoEstudiante);
-                    objRespuesta = this.objOperacionCliente.generarPazYSalvoAsincrono(objPeticion);
-                    imprimirResultado(objRespuesta);
-                    break;
-                case 3:
-                    System.out.println("Saliendo...");
-                    break;
-                default:
-                    System.out.println("Opcion invalida");
+                switch (opcion) {
+                    case 1:
+                        try {
+                            System.out.print("Ingrese su código de estudiante: ");
+                            codigoEstudiante = UtilidadesConsola.leerEntero();
+                            objPeticion = new PeticionEstudianteDTO(codigoEstudiante);
+                            objRespuesta = this.objOperacionCliente.generarPazYSalvoSincrono(objPeticion);
+                            imprimirResultado(objRespuesta);
+                        } catch (Exception e) {
+                            System.out.println("\nError al procesar la solicitud: " + e.getMessage());
+                            System.out.println("Volviendo al menú principal...");
+                        }
+                        break;
+                    case 2:
+                        try {
+                            System.out.print("Ingrese su código de estudiante: ");
+                            codigoEstudiante = UtilidadesConsola.leerEntero();
+                            objPeticion = new PeticionEstudianteDTO(codigoEstudiante);
+                            objRespuesta = this.objOperacionCliente.generarPazYSalvoAsincrono(objPeticion);
+                            imprimirResultado(objRespuesta);
+                        } catch (Exception e) {
+                            System.out.println("\nError al procesar la solicitud: " + e.getMessage());
+                            System.out.println("Volviendo al menú principal...");
+                        }
+                        break;
+                    case 3:
+                        System.out.println("Saliendo...");
+                        break;
+                    default:
+                        System.out.println("Opcion invalida");
+                }
+            } catch (Exception e) {
+                System.out.println("\nError inesperado: " + e.getMessage());
+                System.out.println("Volviendo al menú principal...");
+                opcion = 0; // Forzar continuar en el menú
             }
-
         } while (opcion != 3);
     }
 
     private void imprimirResultado(RespuestaPazYSalvoDTO objRespuesta) {
+        if (objRespuesta.getMensaje() != null && objRespuesta.getMensaje().contains("Error")) {
+            System.out.println("\n" + objRespuesta.getMensaje());
+            return;
+        }
+
         imprimirDeudasDeportes(objRespuesta.getObjDeportes().getDeudas());
         imprimirDeudasFinanciera(objRespuesta.getObjFinanciera().getDeudas());
         imprimirDeudasLaboratorio(objRespuesta.getObjLaboratorio().getPrestamos());

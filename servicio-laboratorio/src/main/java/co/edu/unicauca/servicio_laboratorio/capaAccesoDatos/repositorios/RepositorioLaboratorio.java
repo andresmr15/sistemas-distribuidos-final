@@ -23,22 +23,22 @@ public class RepositorioLaboratorio {
     }
 
     private void insertarPrestamosPrueba() {
-        agregarPrestamo(1, new PrestamoLaboratorio(
-                1,
+        agregarPrestamo(2, new PrestamoLaboratorio(
+                2,
                 LocalDate.parse("2025-01-01"),
                 LocalDate.parse("2025-01-06"),
                 null,
                 EstadoPrestamo.ACTIVO,
                 "Microscopio"));
-        agregarPrestamo(1, new PrestamoLaboratorio(
-                1,
+        agregarPrestamo(2, new PrestamoLaboratorio(
+                2,
                 LocalDate.parse("2025-02-01"),
                 LocalDate.parse("2025-02-04"),
                 LocalDate.parse("2025-01-03"),
                 EstadoPrestamo.DEVUELTO,
                 "Osciloscopio"));
-        agregarPrestamo(3, new PrestamoLaboratorio(
-                1,
+        agregarPrestamo(4, new PrestamoLaboratorio(
+                4,
                 LocalDate.parse("2025-04-02"),
                 LocalDate.parse("2025-04-12"),
                 null,

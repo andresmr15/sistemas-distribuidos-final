@@ -27,19 +27,25 @@ public class RepositorioImplementos {
                 LocalDate.parse("2025-01-26"),
                 LocalDate.parse("2025-02-01"),
                 null,
-                "conos"));
+                "raqueta"));
         agregarDeuda(1, new DeudaImplemento(
                 1,
                 LocalDate.parse("2025-05-21"),
                 LocalDate.parse("2025-06-01"),
                 LocalDate.parse("2025-05-20"),
                 "conos"));
-        agregarDeuda(2, new DeudaImplemento(
-                2,
+        agregarDeuda(3, new DeudaImplemento(
+                3,
                 LocalDate.parse("2025-01-10"),
                 LocalDate.parse("2025-01-25"),
                 null,
-                "conos"));
+                "uniforme"));
+        agregarDeuda(4, new DeudaImplemento(
+                4,
+                LocalDate.parse("2025-04-01"),
+                LocalDate.parse("2025-04-10"),
+                null,
+                "balon"));
     }
 
     private void agregarDeuda(int codigoEstudiante, DeudaImplemento deuda) {

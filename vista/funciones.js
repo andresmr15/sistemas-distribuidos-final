@@ -38,18 +38,18 @@ function conectar(area) {
                 console.log('Conectado exitosamente');
                 suscripcionAChat(area);
                 setConectado(true);
-               // mostrarNotificacionSistema('Conectado al servidor de notificaciones', 'success');
+               
             },
             (error) => {
                 console.error('Error de conexión:', error);
                 setConectado(false);
-                //mostrarNotificacionSistema('Error al conectar: ' + error, 'error');
+                
                 clienteServicios = null;
             }
         );
     } catch (error) {
         console.error('Error al crear conexión:', error);
-        //mostrarNotificacionSistema('Error al crear conexión: ' + error.message, 'error');
+        
     }
 }
 
@@ -61,7 +61,6 @@ function desconectar() {
             areaActual = null;
             document.getElementById('divMensajeSolicitud').innerHTML = '';
             document.getElementById('divMensajeDeudas').innerHTML = '';
-            //mostrarNotificacionSistema('Desconectado del servidor', 'info');
         });
         clienteServicios = null;
     }
@@ -124,28 +123,38 @@ function procesarNotificacionArea(mensaje) {
         try {
             data = JSON.parse(mensaje);
             const referenciaDivMensajes = document.getElementById('divMensajeDeudas');
-            referenciaDivMensajes.innerHTML = '';
-
+            
+            // Crear un contenedor para esta notificación
+            const notificacionContainer = document.createElement('div');
+            notificacionContainer.className = 'notificacion-container';
+            
             // Crear mensaje de estado
             const estadoParrafo = document.createElement('p');
             const esPazYSalvo = data.estado === 'APROBADO';
             estadoParrafo.className = `estado-mensaje ${esPazYSalvo ? 'estado-exito' : 'estado-error'}`;
             estadoParrafo.textContent = `Estado: ${esPazYSalvo ? 'A Paz y Salvo' : 'No A Paz y Salvo'}`;
-            referenciaDivMensajes.appendChild(estadoParrafo);
+            notificacionContainer.appendChild(estadoParrafo);
 
             // Si hay deudas, mostrarlas
             if (data.deudas && data.deudas.length > 0) {
                 const deudasTitulo = document.createElement('p');
                 deudasTitulo.textContent = 'Deudas pendientes:';
-                referenciaDivMensajes.appendChild(deudasTitulo);
+                notificacionContainer.appendChild(deudasTitulo);
 
                 data.deudas.forEach(deuda => {
                     const deudaParrafo = document.createElement('p');
                     deudaParrafo.className = 'estado-mensaje estado-error';
                     deudaParrafo.textContent = `- ${deuda.descripcion}: ${deuda.valor}`;
-                    referenciaDivMensajes.appendChild(deudaParrafo);
+                    notificacionContainer.appendChild(deudaParrafo);
                 });
             }
+
+            // Agregar un separador
+            const separador = document.createElement('hr');
+            notificacionContainer.appendChild(separador);
+
+            // Agregar la nueva notificación al inicio del contenedor
+            referenciaDivMensajes.insertBefore(notificacionContainer, referenciaDivMensajes.firstChild);
 
             // Actualizar estadísticas
             if (esPazYSalvo) {
@@ -156,11 +165,20 @@ function procesarNotificacionArea(mensaje) {
         } catch (e) {
             // Si no es JSON, mostrar el mensaje tal cual
             const referenciaDivMensajes = document.getElementById('divMensajeDeudas');
-            referenciaDivMensajes.innerHTML = '';
+            const notificacionContainer = document.createElement('div');
+            notificacionContainer.className = 'notificacion-container';
+            
             const nuevoParrafo = document.createElement('p');
             nuevoParrafo.className = 'estado-mensaje';
             nuevoParrafo.textContent = mensaje;
-            referenciaDivMensajes.appendChild(nuevoParrafo);
+            notificacionContainer.appendChild(nuevoParrafo);
+            
+            // Agregar un separador
+            const separador = document.createElement('hr');
+            notificacionContainer.appendChild(separador);
+            
+            // Agregar la nueva notificación al inicio del contenedor
+            referenciaDivMensajes.insertBefore(notificacionContainer, referenciaDivMensajes.firstChild);
         }
 
         actualizarEstadisticas();
@@ -169,6 +187,10 @@ function procesarNotificacionArea(mensaje) {
     }
 }
 
+function limpiarNotificacionesDeudas() {
+    const referenciaDivMensajes = document.getElementById('divMensajeDeudas');
+    referenciaDivMensajes.innerHTML = '';
+}
 
 function actualizarEstadisticas() {
     console.log('Estadísticas actualizadas:', estadisticas);
@@ -185,21 +207,16 @@ function enviarMensajePrivadoServidor() {
         clienteServicios.send("/app/procesarPago", {}, JSON.stringify(mensaje));
         const referenciaDivMensajes = document.getElementById('divMensajeDeudas');
         referenciaDivMensajes.innerHTML = '';
-        mostrarNotificacionSistema('Pago procesado correctamente', 'success');
-    } else {
-        mostrarNotificacionSistema('No estás conectado a ninguna área', 'error');
     }
 }
 
 function eliminarDeudas() {
     const codigoEstudiante = document.getElementById('inputEliminarDeuda').value;
     if (!codigoEstudiante) {
-        mostrarNotificacionSistema('Por favor ingrese el código del estudiante', 'error');
         return;
     }
 
     if (!areaActual) {
-        mostrarNotificacionSistema('Por favor seleccione un área primero', 'error');
         return;
     }
 
@@ -212,11 +229,10 @@ function eliminarDeudas() {
         case 'financiera':
             url = `http://localhost:5002/api/deudasFinanciera/${codigoEstudiante}`;
             break;
-        case 'laboratorio':
+        case 'laboratorios':
             url = `http://localhost:5003/api/prestamosLaboratorio/${codigoEstudiante}`;
             break;
         default:
-            mostrarNotificacionSistema('Área no válida', 'error');
             return;
     }
 
@@ -229,17 +245,18 @@ function eliminarDeudas() {
     })
     .then(response => response.text())
     .then(data => {
-        mostrarNotificacionSistema(data, 'success');
         // Limpiar el input
         document.getElementById('inputEliminarDeuda').value = '';
         // Actualizar la vista de deudas
         document.getElementById('divMensajeDeudas').innerHTML = '';
     })
     .catch(error => {
-        console.error('Error:', error);
-        mostrarNotificacionSistema('Error al eliminar las deudas: ' + error.message, 'error');
+        console.error('Error al eliminar las deudas:', error);
     });
 }
 
 // Agregar el evento al botón
 document.getElementById('btnEliminarDeudas').addEventListener('click', eliminarDeudas);
+
+// Agregar el evento al botón de limpiar notificaciones de deudas
+document.getElementById('btnLimpiarDeudas').addEventListener('click', limpiarNotificacionesDeudas);

@@ -29,8 +29,10 @@ public class OperacionesClienteImpl {
     }
 
     @Recover
-    public String recuperar(FeignException e, String token, double monto) {
-        System.out.println("Todos los reintentos fallaron: ");
-        return "Fallo en la operación de retiro";
+    public RespuestaPazYSalvoDTO recuperar(FeignException e, PeticionEstudianteDTO objPeticion) {
+        System.out.println("Todos los reintentos fallaron. Volviendo al menú principal...");
+        RespuestaPazYSalvoDTO respuesta = new RespuestaPazYSalvoDTO();
+        respuesta.setMensaje("Error: No se pudo procesar la solicitud después de varios intentos. Por favor, intente más tarde.");
+        return respuesta;
     }
 }

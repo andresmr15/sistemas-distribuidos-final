@@ -19,8 +19,11 @@
 
   <div id="manejoDeuda">
     <h3>Manejo deuda:</h3>
-    <input type="text" id="inputEliminarDeuda" placeholder="Ingrese el código del estudiante">
-    <button id="btnEliminarDeudas" onclick="enviarMensajePrivadoServidor()" disabled>Deuda pagada</button>
+    <div class="area-controls">
+      <input type="text" id="inputEliminarDeuda" placeholder="Código del estudiante">
+      <button id="btnEliminarDeudas">Eliminar Deudas</button>
+      <button id="btnLimpiarDeudas">Limpiar Notificaciones</button>
+    </div>
   </div>
 
   <div id="outputsMs">
