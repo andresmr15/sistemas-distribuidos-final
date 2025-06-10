@@ -19,12 +19,16 @@ import co.edu.unicauca.servicio_financiera.capaFachadaServices.services.Solicitu
 public class controladorFinanciera {
     @Autowired
     private SolicitudesImpl objSolicitudDeudas;
+    
     @PostMapping("/deudasFinanciera")
     public RespuestaFinancieraDTO solicitarDeudas(@RequestBody PeticionEstudianteDTO objPeticion){
+        System.out.println("[SERVICIO-FINANCIERA] Servicio consumido: Consulta de deudas financieras para estudiante " + objPeticion.getCodigoEstudiante());
         return this.objSolicitudDeudas.solicitarDeudas(objPeticion);
     }
+    
     @DeleteMapping("/deudasFinanciera/{codigoEstudiante}")
     public String eliminarDeudas(@PathVariable int codigoEstudiante){
+        System.out.println("[SERVICIO-FINANCIERA] Servicio consumido: Eliminación de deudas financieras para estudiante " + codigoEstudiante);
         return this.objSolicitudDeudas.eliminarDeudas(codigoEstudiante);
     }
 }

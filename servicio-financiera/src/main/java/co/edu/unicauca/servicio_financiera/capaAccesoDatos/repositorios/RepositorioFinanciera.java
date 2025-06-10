@@ -40,7 +40,7 @@ public class RepositorioFinanciera {
         agregarDeuda(2, new DeudaFinanciera(
                 2,
                 60000,
-                "Adción de laboratorio",
+                "Adición de laboratorio",
                 LocalDate.parse("2025-03-01"),
                 LocalDate.parse("2025-03-10"),
                 EstadoDeuda.PENDIENTE));

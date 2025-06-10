@@ -61,7 +61,7 @@ public class MenuCliente {
                         break;
                     case 3:
                         System.out.println("Saliendo...");
-                        break;
+                        System.exit(0);
                     default:
                         System.out.println("Opcion invalida");
                 }

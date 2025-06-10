@@ -45,7 +45,7 @@ public class RepositorioImplementos {
                 LocalDate.parse("2025-04-01"),
                 LocalDate.parse("2025-04-10"),
                 null,
-                "balon"));
+                "balón"));
     }
 
     private void agregarDeuda(int codigoEstudiante, DeudaImplemento deuda) {

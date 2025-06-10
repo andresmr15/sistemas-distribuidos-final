@@ -21,10 +21,12 @@ public class controladorLaboratorio {
     private SolicitudesImpl objSolicitudDeudas;
     @PostMapping("/prestamosLaboratorio")
     public RespuestaLaboratorioDTO solicitarPrestamos(@RequestBody PeticionEstudianteDTO objPeticion){
+        System.out.println("[SERVICIO-LABORATORIO] Servicio consumido: Consulta de préstamos de laboratorio para estudiante " + objPeticion.getCodigoEstudiante());
         return this.objSolicitudDeudas.solicitarPrestamos(objPeticion);
     }
     @DeleteMapping("/prestamosLaboratorio/{codigoEstudiante}")
     public String eliminarDeudas(@PathVariable int codigoEstudiante){
+        System.out.println("[SERVICIO-LABORATORIO] Servicio consumido: Eliminación de préstamos de laboratorio para estudiante " + codigoEstudiante);
         return this.objSolicitudDeudas.eliminarPrestamos(codigoEstudiante);
     }
 }

@@ -19,12 +19,16 @@ import co.edu.unicauca.servicio_deportes.capaFachadaServices.services.Solicitude
 public class controladorImplementos {
     @Autowired
     private SolicitudesImpl objSolicitudDeudas;
+    
     @PostMapping("/deudasDeportivo")
     public RespuestaDeportesDTO solicitarDeudas(@RequestBody PeticionEstudianteDTO objPeticion){
+        System.out.println("[SERVICIO-DEPORTES] Servicio consumido: Consulta de deudas deportivas para estudiante " + objPeticion.getCodigoEstudiante());
         return this.objSolicitudDeudas.solicitarDeudas(objPeticion);
     }
+    
     @DeleteMapping("/deudasDeportivo/{codigoEstudiante}")
     public String eliminarDeudas(@PathVariable int codigoEstudiante){
+        System.out.println("[SERVICIO-DEPORTES] Servicio consumido: Eliminación de deudas deportivas para estudiante " + codigoEstudiante);
         return this.objSolicitudDeudas.eliminarDeudas(codigoEstudiante);
     }
 }
